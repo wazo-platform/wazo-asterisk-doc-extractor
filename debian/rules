@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+export PYBUILD_NAME=wazo-asterisk-doc-extractor
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_installinit:
+	dh_installinit --noscripts
