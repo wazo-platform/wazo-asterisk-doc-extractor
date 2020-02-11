@@ -1,0 +1,5 @@
+wazo-asterisk-doc-extractor (0.0.1) wazo-dev-buster; urgency=medium
+
+  * Initial release.
+
+ -- Wazo Maintainers <dev+pkg@wazo.community>  Tue, 11 Feb 2020 14:36:09 -0500
