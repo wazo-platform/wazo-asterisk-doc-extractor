@@ -2,8 +2,8 @@ Source: wazo-asterisk-doc-extractor
 Section: utils
 Priority: optional
 Maintainer: Wazo Maintainers <dev@wazo.community>
-Build-Depends: debhelper (>= 9), dh-python, python3-all
-Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 10), dh-python, python3-all
+Standards-Version: 4.2.1
 X-Python-Version: >= 3
 
 Package: wazo-asterisk-doc-extractor
@@ -12,4 +12,3 @@ Depends: ${python3:Depends}, ${misc:Depends}
 Description: Documentation Extraction Tool for Asterisk
  Wazo is a system based on a powerful IPBX, to bring an easy to
  install solution for telephony and related services.
- .
