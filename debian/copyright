@@ -1,9 +1,9 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: wazo-auth
-Source: https://github.com/wazo-platform/wazo-auth
+Upstream-Name: wazo-asterisk-doc-extractor
+Source: https://github.com/wazo-platform/wazo-asterisk-doc-extractor
 
 Files: *
-Copyright: 2015-2019 The Wazo Authors
+Copyright: 2020 Wazo Authors
 License: GPL-3.0+
 
 License: GPL-3.0+
