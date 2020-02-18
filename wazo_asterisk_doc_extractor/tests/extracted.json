@@ -1,0 +1,58 @@
+{
+  "endpoint": {
+    "callerid_privacy": {
+      "name": "callerid_privacy",
+      "default": null,
+      "synopsis": "Default privacy level",
+      "description": "",
+      "note": "",
+      "choices": {
+        "allowed_not_screened": "",
+        "allowed_passed_screen": "",
+        "allowed_failed_screen": "",
+        "allowed": "",
+        "prohib_not_screened": "",
+        "prohib_passed_screen": "",
+        "prohib_failed_screen": "",
+        "prohib": "",
+        "unavailable": ""
+      }
+    },
+    "direct_media_glare_mitigation": {
+      "name": "direct_media_glare_mitigation",
+      "default": "none",
+      "synopsis": "Mitigation of direct media (re)INVITE glare",
+      "description": "This setting attempts to avoid creating INVITE glare scenarios by disabling direct media reINVITEs in one direction thereby allowing designated servers (according to this option) to initiate direct media reINVITEs without contention and significantly reducing call setup time.\nA more detailed description of how this option functions can be found on the Asterisk wiki https://wiki.asterisk.org/wiki/display/AST/SIP+Direct+Media+Reinvite+Glare+Avoidance",
+      "note": "",
+      "choices": {
+        "none": "",
+        "outgoing": "",
+        "incoming": ""
+      }
+    },
+    "direct_media_method": {
+      "name": "direct_media_method",
+      "default": "invite",
+      "synopsis": "Direct Media method type",
+      "description": "Method for setting up Direct Media between endpoints.",
+      "note": "",
+      "choices": {
+        "invite": "",
+        "reinvite": "Alias for the \"invite\" value.",
+        "update": ""
+      }
+    },
+    "connected_line_method": {
+      "name": "connected_line_method",
+      "default": "invite",
+      "synopsis": "Connected line method type",
+      "description": "Method used when updating connected line information.",
+      "note": "",
+      "choices": {
+        "invite": "When set to \"invite\", check the remote's Allow header and if UPDATE is allowed, send UPDATE instead of INVITE to avoid SDP renegotiation. If UPDATE is not Allowed, send INVITE.",
+        "reinvite": "Alias for the \"invite\" value.",
+        "update": "If set to \"update\", send UPDATE regardless of what the remote Allows."
+      }
+    }
+  }
+}

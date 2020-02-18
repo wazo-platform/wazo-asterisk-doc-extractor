@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE docs SYSTEM "appdocsxml.dtd">
+<?xml-stylesheet type="text/xsl" href="appdocsxml.xslt"?>
+<docs xmlns:xi="http://www.w3.org/2001/XInclude">
+	<configInfo name="res_pjsip" language="en_US">
+		<synopsis>SIP Resource using PJProject</synopsis>
+		<configFile name="pjsip.conf">
+			<configObject name="endpoint">
+				<synopsis>Endpoint</synopsis>
+				<configOption name="callerid_privacy">
+					<synopsis>Default privacy level</synopsis>
+					<description>
+						<enumlist>
+							<enum name="allowed_not_screened" />
+							<enum name="allowed_passed_screen" />
+							<enum name="allowed_failed_screen" />
+							<enum name="allowed" />
+							<enum name="prohib_not_screened" />
+							<enum name="prohib_passed_screen" />
+							<enum name="prohib_failed_screen" />
+							<enum name="prohib" />
+							<enum name="unavailable" />
+						</enumlist>
+					</description>
+				</configOption>
+				<configOption name="direct_media_glare_mitigation" default="none">
+					<synopsis>Mitigation of direct media (re)INVITE glare</synopsis>
+					<description>
+						<para>
+						This setting attempts to avoid creating INVITE glare scenarios
+						by disabling direct media reINVITEs in one direction thereby allowing
+						designated servers (according to this option) to initiate direct
+						media reINVITEs without contention and significantly reducing call
+						setup time.
+						</para>
+						<para>
+						A more detailed description of how this option functions can be found on
+						the Asterisk wiki https://wiki.asterisk.org/wiki/display/AST/SIP+Direct+Media+Reinvite+Glare+Avoidance
+						</para>
+						<enumlist>
+							<enum name="none" />
+							<enum name="outgoing" />
+							<enum name="incoming" />
+						</enumlist>
+					</description>
+				</configOption>
+				<configOption name="direct_media_method" default="invite">
+					<synopsis>Direct Media method type</synopsis>
+					<description>
+						<para>Method for setting up Direct Media between endpoints.</para>
+						<enumlist>
+							<enum name="invite" />
+							<enum name="reinvite">
+								<para>Alias for the <literal>invite</literal> value.</para>
+							</enum>
+							<enum name="update" />
+						</enumlist>
+					</description>
+				</configOption>
+				<configOption name="connected_line_method" default="invite">
+					<synopsis>Connected line method type</synopsis>
+					<description>
+						<para>Method used when updating connected line information.</para>
+						<enumlist>
+							<enum name="invite">
+							<para>When set to <literal>invite</literal>, check the remote's Allow header and
+							if UPDATE is allowed, send UPDATE instead of INVITE to avoid SDP
+							renegotiation.  If UPDATE is not Allowed, send INVITE.</para>
+							</enum>
+							<enum name="reinvite">
+								<para>Alias for the <literal>invite</literal> value.</para>
+							</enum>
+							<enum name="update">
+							<para>If set to <literal>update</literal>, send UPDATE regardless of what the remote
+							Allows. </para>
+							</enum>
+						</enumlist>
+					</description>
+				</configOption>
+			</configObject>
+		</configFile>
+	</configInfo>
+</docs>
