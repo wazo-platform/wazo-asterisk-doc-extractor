@@ -1,4 +1,4 @@
-# Copyright 2020 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2020-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -22,36 +22,31 @@ def trim_spaces(s):
 def reformat_block(s):
     # Replace some tags by quotes and remove all other tags
     for tag in tag_to_quote:
-        s = s.replace("<{}>".format(tag), '"')
-        s = s.replace("</{}>".format(tag), '"')
+        s = s.replace(f"<{tag}>", '"')
+        s = s.replace(f"</{tag}>", '"')
     elem = ElementTree.fromstring(s)
     s = ElementTree.tostring(elem, encoding="utf8", method="text").decode("utf8")
     return trim_spaces(s)
 
 
 def extract_para(elem):
-    paras = elem.findall("para")
-    parts = []
-    for para in paras:
-        parts.append(
-            reformat_block(ElementTree.tostring(para, encoding="utf8").decode("utf8"))
-        )
+    parts = [
+        reformat_block(ElementTree.tostring(para, encoding="utf8").decode("utf8"))
+        for para in elem.findall("para")
+    ]
     return "\n".join(parts)
 
 
 def extract_node(elem):
-    notes = []
-    for note in elem.findall("note"):
-        notes.append(extract_para(note))
+    notes = [extract_para(note) for note in elem.findall("note")]
     return "\n".join(notes)
 
 
 def extract_choices(elem):
-    result = {}
-    for enum in elem.findall("./*enum"):
-        description = extract_para(enum) if enum.text else ""
-        result[enum.attrib["name"]] = description
-    return result
+    return {
+        enum.attrib["name"]: extract_para(enum) if enum.text else ""
+        for enum in elem.findall("./*enum")
+    }
 
 
 def extract_pjsip_option(elem):
@@ -77,19 +72,19 @@ def extract_pjsip_option(elem):
 
 
 def extract_pjsip_doc_section(elem):
-    result = {}
-    for option in elem:
-        if "name" not in option.attrib:
-            continue
-        result[option.attrib["name"]] = extract_pjsip_option(option)
-    return result
+    return {
+        option.attrib["name"]: extract_pjsip_option(option)
+        for option in elem
+        if "name" in option.attrib
+    }
 
 
 def extract_pjsip_doc(root):
-    result = {}
-    for section in root.findall(".//*[@name='res_pjsip']/configFile/"):
-        result[section.attrib["name"]] = extract_pjsip_doc_section(section)
-    return result
+    sections = root.findall(".//*[@name='res_pjsip']/configFile/")
+    return {
+        section.attrib["name"]: extract_pjsip_doc_section(section)
+        for section in sections
+    }
 
 
 def main():
