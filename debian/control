@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Wazo Maintainers <dev@wazo.community>
 Build-Depends: debhelper (>= 10), dh-python, python3-all, python3-setuptools
 Standards-Version: 4.2.1
-X-Python-Version: >= 3
+X-Python3-Version: >= 3.9
 
 Package: wazo-asterisk-doc-extractor
 Architecture: all
