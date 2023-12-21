@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 from __future__ import annotations
 
-import json
 import argparse
+import json
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
