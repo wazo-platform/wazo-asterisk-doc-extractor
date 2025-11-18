@@ -1,4 +1,4 @@
-# Copyright 2020-2023 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2020-2025 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -16,7 +16,7 @@ XML_ROOT = ElementTree.parse(INPUT_PATH).getroot()
 
 
 class TestPJSIPDocExtractor(unittest.TestCase):
-    def test_conversion(self):
+    def test_conversion(self) -> None:
         result = extract_pjsip_doc(XML_ROOT)
 
         with open(EXPECTED_RESULT_PATH) as f:
