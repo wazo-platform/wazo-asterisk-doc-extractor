@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from typing import TypedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -15,6 +16,15 @@ tag_to_quote = [
     "replaceable",
     "warning",
 ]
+
+
+class PJSIPOption(TypedDict):
+    name: str
+    default: str | None
+    synopsis: str
+    description: str
+    note: str
+    choices: dict[str, str]
 
 
 def trim_spaces(s: str) -> str:
@@ -52,9 +62,9 @@ def extract_choices(elem: Element) -> dict[str, str]:
     }
 
 
-def extract_pjsip_option(elem: Element) -> dict[str, str | None | dict]:
+def extract_pjsip_option(elem: Element) -> PJSIPOption:
     synopsis, description, note = "", "", ""
-    choices = {}
+    choices: dict[str, str] = {}
 
     for e in elem:
         if e.tag == "synopsis" and e.text is not None:
@@ -74,7 +84,7 @@ def extract_pjsip_option(elem: Element) -> dict[str, str | None | dict]:
     }
 
 
-def extract_pjsip_doc_section(elem: Element) -> dict[str, dict[str, str | None | dict]]:
+def extract_pjsip_doc_section(elem: Element) -> dict[str, PJSIPOption]:
     return {
         option.attrib["name"]: extract_pjsip_option(option)
         for option in elem
@@ -84,7 +94,7 @@ def extract_pjsip_doc_section(elem: Element) -> dict[str, dict[str, str | None |
 
 def extract_pjsip_doc(
     root: Element,
-) -> dict[str, dict[str, dict[str, str | None | dict]]]:
+) -> dict[str, dict[str, PJSIPOption]]:
     sections = root.findall(".//*[@name='res_pjsip']/configFile/")
     return {
         section.attrib["name"]: extract_pjsip_doc_section(section)
