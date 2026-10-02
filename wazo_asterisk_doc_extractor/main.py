@@ -1,10 +1,11 @@
-# Copyright 2020-2025 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2020-2026 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 from typing import TypedDict
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
@@ -16,6 +17,8 @@ tag_to_quote = [
     "replaceable",
     "warning",
 ]
+
+PLAIN_TOKEN_RE = re.compile(r"[^\s<>|]+")
 
 
 class PJSIPOption(TypedDict):
@@ -55,10 +58,21 @@ def extract_node(elem: Element) -> str:
     return "\n".join(notes)
 
 
+def is_selectable_choice(enum: Element) -> bool:
+    # Composite values are documented as parameter headings, not as choices
+    has_nested_choices = enum.find("enumlist") is not None
+    return (
+        not has_nested_choices
+        and PLAIN_TOKEN_RE.fullmatch(enum.attrib["name"]) is not None
+    )
+
+
 def extract_choices(elem: Element) -> dict[str, str]:
+    enums = elem.findall("./*enum")
+    if not all(is_selectable_choice(enum) for enum in enums):
+        return {}
     return {
-        enum.attrib["name"]: extract_para(enum) if enum.text else ""
-        for enum in elem.findall("./*enum")
+        enum.attrib["name"]: extract_para(enum) if enum.text else "" for enum in enums
     }
 
 

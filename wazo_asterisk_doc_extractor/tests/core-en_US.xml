@@ -77,6 +77,181 @@
 						</enumlist>
 					</description>
 				</configOption>
+				<configOption name="codec_prefs_incoming_offer">
+					<since>
+						<version>18.0.0</version>
+					</since>
+					<synopsis>Codec negotiation prefs for incoming offers.</synopsis>
+					<description>
+						<para>
+							This is a string that describes how the codecs
+							specified on an incoming SDP offer (pending) are reconciled with the codecs specified
+							on an endpoint (configured) before being sent to the Asterisk core.
+							The string actually specifies 4 <literal>name:value</literal> pair parameters
+							separated by commas. Whitespace is ignored and they may be specified in any order.
+							Note that this option is reserved for future functionality.
+
+						</para>
+						<para>
+							Parameters:
+						</para>
+						<enumlist>
+							<enum name="prefer: &lt; pending | configured &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="pending"><para>The codec list from the caller. (default)</para></enum>
+									<enum name="configured"><para>The codec list from the endpoint.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="operation : &lt; intersect | only_preferred | only_nonpreferred &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="intersect"><para>Only common codecs with the preferred codecs first. (default)</para></enum>
+									<enum name="only_preferred"><para>Use only the preferred codecs.</para></enum>
+									<enum name="only_nonpreferred"><para>Use only the non-preferred codecs.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="keep : &lt; all | first &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="all"><para>After the operation, keep all codecs. (default)</para></enum>
+									<enum name="first"><para>After the operation, keep only the first codec.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="transcode : &lt; allow | prevent &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="allow"><para>Allow transcoding. (default)</para></enum>
+									<enum name="prevent"><para>Prevent transcoding.</para></enum>
+								</enumlist>
+							</enum>
+						</enumlist>
+						<para>
+						</para>
+						<example>
+							codec_prefs_incoming_offer = prefer: pending, operation: intersect, keep: all, transcode: allow
+						</example>
+						<para>
+							Prefer the codecs coming from the caller.  Use only the ones that are common.
+							keeping the order of the preferred list. Keep all codecs in the result. Allow transcoding.
+						</para>
+					</description>
+				</configOption>
+				<configOption name="codec_prefs_incoming_answer">
+					<since>
+						<version>18.0.0</version>
+					</since>
+					<synopsis>Codec negotiation prefs for incoming answers.</synopsis>
+					<description>
+						<para>
+							This is a string that describes how the codecs specified in an incoming SDP answer
+							(pending) are reconciled with the codecs specified on an endpoint (configured)
+							when receiving an SDP answer.
+							The string actually specifies 4 <literal>name:value</literal> pair parameters
+							separated by commas. Whitespace is ignored and they may be specified in any order.
+							Note that this option is reserved for future functionality.
+
+						</para>
+						<para>
+							Parameters:
+						</para>
+						<enumlist>
+							<enum name="prefer: &lt; pending | configured &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="pending"><para>The codec list in the received SDP answer. (default)</para></enum>
+									<enum name="configured"><para>The codec list from the endpoint.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="operation : &lt; union | intersect | only_preferred | only_nonpreferred &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="union"><para>Merge the lists with the preferred codecs first.</para></enum>
+									<enum name="intersect"><para>Only common codecs with the preferred codecs first. (default)</para></enum>
+									<enum name="only_preferred"><para>Use only the preferred codecs.</para></enum>
+									<enum name="only_nonpreferred"><para>Use only the non-preferred codecs.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="keep : &lt; all | first &gt;">
+								<para>
+								</para>
+								<enumlist>
+									<enum name="all"><para>After the operation, keep all codecs. (default)</para></enum>
+									<enum name="first"><para>After the operation, keep only the first codec.</para></enum>
+								</enumlist>
+							</enum>
+							<enum name="transcode : &lt; allow | prevent &gt;">
+								<para>
+								The transcode parameter is ignored when processing answers.
+								</para>
+							</enum>
+						</enumlist>
+						<para>
+						</para>
+						<example>
+						codec_prefs_incoming_answer = keep: first
+						</example>
+						<para>
+						Use the defaults but keep oinly the first codec.
+						</para>
+					</description>
+				</configOption>
+			</configObject>
+			<configObject name="auth">
+				<synopsis>Authentication type</synopsis>
+				<configOption name="password_digest" default="">
+					<since>
+						<version>20.12.0</version>
+						<version>21.7.0</version>
+						<version>22.2.0</version>
+					</since>
+					<synopsis>One or more pre-computed hashes used for authentication.</synopsis>
+					<description><para>Only used when auth_type is <literal>digest</literal>.
+						As an alternative to specifying a plain text password,
+						you can specify one or more pre-computed digests separated by
+						commas.
+						</para>
+						<para>
+						<literal>password_digest= &lt;digest-spec&gt;[,&lt;digest_spec&gt;]...</literal>
+						</para>
+						<enumlist>
+							<enum name="&lt;digest-spec&gt;"><para>&lt;hash-algorithm&gt;:&lt;hashed-credential&gt;</para></enum>
+							<enum name="&lt;hash-algorithm&gt;"><para>One of the supported hash algorithms
+								which currently are</para>
+								<enumlist>
+									<enum name="MD5"><para>Supported by all versions of OpenSSL and pjproject</para></enum>
+									<enum name="SHA-256"><para>Supported by OpenSSL versions &gt;> 1.0.0 and pjproject versions &gt;= 2.15.1</para></enum>
+									<enum name="SHA-512-256"><para>Supported by OpenSSL versions &gt;= 1.1.1 and pjproject versions &gt;= 2.15.1</para></enum>
+								</enumlist>
+								<para>You can see the current list by running the CLI command
+								<literal>pjproject show buildopts</literal>.
+							</para></enum>
+							<enum name="&lt;hashed-credential&gt;">
+								<para>The result of passing the following string through
+								the selected hash algorithm:
+								<literal>&lt;username&gt;:&lt;realm&gt;:&lt;password&gt;</literal>
+								</para>
+							</enum>
+						</enumlist>
+						<para>You can create the hash by piping the string into the appropriate
+						hash/checksum program.  See the description for the <literal>realm</literal>
+						parameter for info on how to set it.</para>
+						<example>
+						$ echo -n "myname:myrealm:mypassword" | openssl dgst -md5
+						MD5(stdin)= dce9ccd0a69e3ef90d8b9bf725053e78
+						</example>
+						<para>You would then set:</para>
+						<example>
+						password_digest = md5:dce9ccd0a69e3ef90d8b9bf725053e78
+						</example>
+					</description>
+				</configOption>
 			</configObject>
 		</configFile>
 	</configInfo>
