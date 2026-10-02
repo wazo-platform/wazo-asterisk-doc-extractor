@@ -53,6 +53,32 @@
         "reinvite": "Alias for the \"invite\" value.",
         "update": "If set to \"update\", send UPDATE regardless of what the remote Allows."
       }
+    },
+    "codec_prefs_incoming_offer": {
+      "name": "codec_prefs_incoming_offer",
+      "default": null,
+      "synopsis": "Codec negotiation prefs for incoming offers.",
+      "description": "This is a string that describes how the codecs specified on an incoming SDP offer (pending) are reconciled with the codecs specified on an endpoint (configured) before being sent to the Asterisk core. The string actually specifies 4 \"name:value\" pair parameters separated by commas. Whitespace is ignored and they may be specified in any order. Note that this option is reserved for future functionality.\nParameters:\n\nPrefer the codecs coming from the caller. Use only the ones that are common. keeping the order of the preferred list. Keep all codecs in the result. Allow transcoding.",
+      "note": "",
+      "choices": {}
+    },
+    "codec_prefs_incoming_answer": {
+      "name": "codec_prefs_incoming_answer",
+      "default": null,
+      "synopsis": "Codec negotiation prefs for incoming answers.",
+      "description": "This is a string that describes how the codecs specified in an incoming SDP answer (pending) are reconciled with the codecs specified on an endpoint (configured) when receiving an SDP answer. The string actually specifies 4 \"name:value\" pair parameters separated by commas. Whitespace is ignored and they may be specified in any order. Note that this option is reserved for future functionality.\nParameters:\n\nUse the defaults but keep oinly the first codec.",
+      "note": "",
+      "choices": {}
+    }
+  },
+  "auth": {
+    "password_digest": {
+      "name": "password_digest",
+      "default": "",
+      "synopsis": "One or more pre-computed hashes used for authentication.",
+      "description": "Only used when auth_type is \"digest\". As an alternative to specifying a plain text password, you can specify one or more pre-computed digests separated by commas.\n\"password_digest= <digest-spec>[,<digest_spec>]...\"\nYou can create the hash by piping the string into the appropriate hash/checksum program. See the description for the \"realm\" parameter for info on how to set it.\nYou would then set:",
+      "note": "",
+      "choices": {}
     }
   }
 }
